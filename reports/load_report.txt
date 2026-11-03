@@ -1,0 +1,21 @@
+Subjects parsed: 15
+Total windows: 1032
+
+Per-subject window/class counts:
+  S10: {'n_windows': 71, 'n_stress': 22, 'n_non_stress': 49}
+  S11: {'n_windows': 70, 'n_stress': 21, 'n_non_stress': 49}
+  S13: {'n_windows': 70, 'n_stress': 21, 'n_non_stress': 49}
+  S14: {'n_windows': 70, 'n_stress': 21, 'n_non_stress': 49}
+  S15: {'n_windows': 70, 'n_stress': 21, 'n_non_stress': 49}
+  S16: {'n_windows': 68, 'n_stress': 20, 'n_non_stress': 48}
+  S17: {'n_windows': 72, 'n_stress': 23, 'n_non_stress': 49}
+  S2: {'n_windows': 66, 'n_stress': 19, 'n_non_stress': 47}
+  S3: {'n_windows': 67, 'n_stress': 20, 'n_non_stress': 47}
+  S4: {'n_windows': 67, 'n_stress': 19, 'n_non_stress': 48}
+  S5: {'n_windows': 69, 'n_stress': 20, 'n_non_stress': 49}
+  S6: {'n_windows': 68, 'n_stress': 20, 'n_non_stress': 48}
+  S7: {'n_windows': 68, 'n_stress': 19, 'n_non_stress': 49}
+  S8: {'n_windows': 68, 'n_stress': 21, 'n_non_stress': 47}
+  S9: {'n_windows': 68, 'n_stress': 20, 'n_non_stress': 48}
+
+Sanity check: WESAD has 15 subjects. A per-subject class imbalance (e.g. far more non-stress than stress windows, since the stress protocol segment is shorter than baseline) is EXPECTED -- note it, don't 'fix' it by discarding data without saying so in the writeup.

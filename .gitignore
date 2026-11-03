@@ -1,0 +1,13 @@
+# data (WESAD is not redistributed)
+data/raw/
+data/processed/
+
+# secrets
+.env
+*.key
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/

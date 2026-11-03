@@ -1,0 +1,25 @@
+=== Mean / minimum LOSO balanced accuracy per feature set ===
+              model    feature_set  mean_bal_acc  min_bal_acc
+  gradient_boosting            all        0.8329       0.5238
+  gradient_boosting         no_eda        0.7991       0.4728
+  gradient_boosting no_eda_no_temp        0.7368       0.6103
+  gradient_boosting        no_temp        0.7692       0.5476
+logistic_regression            all        0.8064       0.5208
+logistic_regression         no_eda        0.7557       0.5250
+logistic_regression no_eda_no_temp        0.6944       0.4792
+logistic_regression        no_temp        0.7781       0.5000
+      random_forest            all        0.8455       0.5000
+      random_forest         no_eda        0.7776       0.5521
+      random_forest no_eda_no_temp        0.6929       0.5207
+      random_forest        no_temp        0.7648       0.5816
+
+=== Detail for ['S14', 'S5'] (balanced accuracy) ===
+model          gradient_boosting        logistic_regression        random_forest       
+subject                      S14     S5                 S14     S5           S14     S5
+feature_set                                                                            
+all                        0.524  0.740               0.925  0.744         0.500  0.690
+no_eda                     0.473  0.665               0.888  0.614         0.595  0.590
+no_eda_no_temp             0.718  0.825               0.918  0.524         0.758  0.650
+no_temp                    0.548  0.666               1.000  0.930         0.667  0.729
+
+How to read this: compare each row to 'all'. If removing a group RAISES a failing subject's score, the model was leaning on that group in a way that doesn't hold for them. If a single group ('acc_only') scores well on its own, that group may be a shortcut rather than a physiological signal. Differences under ~0.10 for one subject are within noise (about 35 independent windows per person).

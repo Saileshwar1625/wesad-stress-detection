@@ -1,0 +1,191 @@
+=== Per-subject AUROC vs balanced accuracy, and per-subject normalization ===
+
+Reproducibility check (norm = none) against the earlier train_eval.py run:
+  rf: mean balanced accuracy 0.846 vs earlier train_eval.py 0.846 -> OK
+  gb: mean balanced accuracy 0.833 vs earlier train_eval.py 0.833 -> OK
+  lr: mean balanced accuracy 0.806 vs earlier train_eval.py 0.806 -> OK
+
+=== Summary per model and normalization ===
+(mean_gap = mean of best-threshold balanced accuracy minus balanced accuracy at the default threshold; n_below_0.7 counts subjects with balanced accuracy < 0.7)
+model    norm  mean_auroc  min_auroc min_auroc_subj  mean_bal_acc  min_bal_acc min_bal_acc_subj  n_below_0.7  n_threshold  n_ranking  n_mixed  mean_gap
+   rf    none       0.972      0.928             S5         0.846        0.500              S14            2            2          0        0     0.098
+   rf    full       0.955      0.559            S17         0.887        0.443              S17            2            1          1        0     0.061
+   rf early50       0.977      0.942             S3         0.838        0.500              S14            3            3          0        0     0.114
+   rf early20       0.960      0.759            S14         0.817        0.490              S14            4            3          0        1     0.132
+   rf early10       0.949      0.700            S14         0.801        0.486              S14            4            3          0        1     0.139
+   gb    none       0.949      0.738            S14         0.833        0.524              S14            1            0          0        1     0.085
+   gb    full       0.957      0.596            S17         0.893        0.458              S17            2            1          1        0     0.053
+   gb early50       0.967      0.871             S9         0.832        0.500               S3            3            3          0        0     0.126
+   gb early20       0.954      0.614            S14         0.855        0.459              S14            3            2          1        0     0.090
+   gb early10       0.945      0.559            S14         0.805        0.378              S14            4            3          1        0     0.136
+   lr    none       0.935      0.726             S9         0.806        0.521               S9            3            1          0        2     0.107
+   lr    full       0.933      0.553            S17         0.894        0.500              S17            1            0          1        0     0.038
+   lr early50       0.949      0.533            S14         0.884        0.571              S14            1            0          1        0     0.048
+   lr early20       0.953      0.803            S11         0.867        0.656              S14            1            1          0        0     0.069
+   lr early10       0.918      0.584            S14         0.804        0.551              S14            4            3          1        0     0.105
+
+=== Every subject, no normalization: AUROC / balanced accuracy at the default threshold ===
+                gb         lr         rf
+subject                                 
+S10      0.96/0.78  0.95/0.88  0.98/0.91
+S11      0.96/0.88  1.00/0.92  0.96/0.92
+S13      1.00/0.99  0.94/0.71  0.97/0.86
+S14      0.74/0.52  0.99/0.93  0.98/0.50
+S15      0.95/0.85  0.78/0.56  0.98/0.97
+S16      1.00/0.82  1.00/0.89  1.00/0.90
+S17      0.95/0.86  0.93/0.84  0.94/0.87
+S2       0.96/0.82  0.94/0.61  0.97/0.79
+S3       0.95/0.85  0.98/0.93  0.98/0.94
+S4       1.00/1.00  1.00/0.92  1.00/0.97
+S5       0.92/0.74  0.92/0.74  0.93/0.69
+S6       0.89/0.82  1.00/1.00  0.93/0.87
+S7       0.99/0.83  0.92/0.85  0.98/0.89
+S8       1.00/0.86  0.94/0.81  0.99/0.81
+S9       0.97/0.88  0.73/0.52  0.99/0.80
+
+=== Cross-model correlation of per-subject scores, no normalization (n = subjects, imprecise; Pearson can hinge on one subject) ===
+
+AUROC, Pearson:
+      gb    lr    rf
+gb  1.00 -0.15  0.30
+lr -0.15  1.00 -0.11
+rf  0.30 -0.11  1.00
+
+AUROC, Spearman:
+      gb    lr    rf
+gb  1.00  0.05  0.63
+lr  0.05  1.00  0.17
+rf  0.63  0.17  1.00
+
+balanced accuracy, Pearson:
+      gb    lr    rf
+gb  1.00 -0.17  0.79
+lr -0.17  1.00  0.05
+rf  0.79  0.05  1.00
+
+balanced accuracy, Spearman:
+      gb    lr    rf
+gb  1.00 -0.13  0.45
+lr -0.13  1.00  0.30
+rf  0.45  0.30  1.00
+
+=== rf: focus subjects, AUROC / balanced accuracy by normalization ===
+norm          none       full    early50    early20    early10
+subject                                                       
+S14      0.98/0.50  0.91/0.62  0.96/0.50  0.76/0.49  0.70/0.49
+S5       0.93/0.69  1.00/0.98  0.96/0.94  1.00/1.00  1.00/0.90
+S15      0.98/0.97  1.00/0.95  0.97/0.84  0.93/0.88  0.92/0.74
+S2       0.97/0.79  0.98/0.95  0.95/0.83  0.94/0.52  0.96/0.55
+S9       0.99/0.80  1.00/1.00  0.97/0.82  1.00/1.00  1.00/1.00
+
+=== gb: focus subjects, AUROC / balanced accuracy by normalization ===
+norm          none       full    early50    early20    early10
+subject                                                       
+S14      0.74/0.52  0.91/0.66  0.91/0.55  0.61/0.46  0.56/0.38
+S5       0.92/0.74  1.00/0.98  1.00/0.94  1.00/1.00  1.00/1.00
+S15      0.95/0.85  0.99/0.97  0.96/0.81  0.93/0.85  0.97/0.70
+S2       0.96/0.82  0.98/0.94  0.99/0.87  0.93/0.56  0.92/0.75
+S9       0.97/0.88  1.00/0.95  0.87/0.64  1.00/0.99  1.00/0.92
+
+=== lr: focus subjects, AUROC / balanced accuracy by normalization ===
+norm          none       full    early50    early20    early10
+subject                                                       
+S14      0.99/0.93  0.89/0.74  0.53/0.57  0.92/0.66  0.58/0.55
+S5       0.92/0.74  0.99/0.97  1.00/0.96  1.00/0.93  1.00/0.80
+S15      0.78/0.56  0.95/0.88  0.99/0.97  1.00/0.95  1.00/0.89
+S2       0.94/0.61  0.94/0.90  0.94/0.83  0.99/0.92  0.87/0.55
+S9       0.73/0.52  0.84/0.80  0.95/0.75  0.93/0.75  0.94/0.87
+
+=== Subjects with balanced accuracy < 0.7, per model and normalization ===
+(status rules: ranking = AUROC < 0.70; threshold = AUROC >= 0.85 and gap >= 0.15; mixed = otherwise; judgment calls)
+
+-- rf / none: 2 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.982              0.500                   0.949          0.449          0.066       0.300 threshold
+     S5  0.928              0.690                   0.884          0.194          0.213       0.290 threshold
+
+-- rf / full: 2 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.911              0.619                   0.881          0.262          0.182       0.300 threshold
+    S17  0.559              0.443                   0.639          0.196          0.257       0.319   ranking
+
+-- rf / early50: 3 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.962              0.500                   0.959          0.459          0.077       0.300 threshold
+    S17  0.951              0.674                   0.894          0.220          0.169       0.319 threshold
+     S3  0.942              0.525                   0.894          0.369          0.107       0.298 threshold
+
+-- rf / early20: 4 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.759              0.490                   0.803          0.313          0.138       0.300     mixed
+    S17  0.944              0.543                   0.867          0.324          0.180       0.319 threshold
+     S2  0.939              0.516                   0.915          0.399          0.167       0.288 threshold
+     S3  0.992              0.500                   0.957          0.457          0.086       0.298 threshold
+
+-- rf / early10: 4 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.700              0.486                   0.796          0.309          0.194       0.300     mixed
+     S2  0.961              0.553                   0.925          0.373          0.180       0.288 threshold
+     S3  0.929              0.500                   0.907          0.407          0.057       0.298 threshold
+     S7  0.966              0.579                   0.959          0.380          0.112       0.279 threshold
+
+-- gb / none: 1 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence status
+    S14  0.738              0.524                   0.789          0.265          0.079       0.300  mixed
+
+-- gb / full: 2 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.912              0.656                   0.857          0.201          0.148       0.300 threshold
+    S17  0.596              0.458                   0.694          0.236          0.319       0.319   ranking
+
+-- gb / early50: 3 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.910              0.548                   0.895          0.347          0.035       0.300 threshold
+     S3  0.930              0.500                   0.915          0.415          0.032       0.298 threshold
+     S9  0.871              0.642                   0.896          0.254          0.229       0.294 threshold
+
+-- gb / early20: 3 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.614              0.459                   0.711          0.252          0.093       0.300   ranking
+     S2  0.933              0.558                   0.925          0.368          0.166       0.288 threshold
+     S3  0.952              0.500                   0.894          0.394          0.021       0.298 threshold
+
+-- gb / early10: 4 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.559              0.378                   0.725          0.347          0.181       0.300   ranking
+     S3  0.960              0.500                   0.911          0.411          0.020       0.298 threshold
+     S6  0.991              0.675                   0.965          0.290          0.122       0.294 threshold
+     S7  0.974              0.632                   0.959          0.328          0.121       0.279 threshold
+
+-- lr / none: 3 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S15  0.781              0.561                   0.725          0.163          0.783       0.300     mixed
+     S2  0.938              0.605                   0.915          0.310          0.131       0.288 threshold
+     S9  0.726              0.521                   0.767          0.246          0.230       0.294     mixed
+
+-- lr / full: 1 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence  status
+    S17  0.553              0.500                   0.620          0.119          0.377       0.319 ranking
+
+-- lr / early50: 1 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence  status
+    S14  0.533              0.571                   0.571          0.000          0.078       0.300 ranking
+
+-- lr / early20: 1 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.916              0.656                   0.881          0.225          0.223       0.300 threshold
+
+-- lr / early10: 4 subject(s)
+subject  auroc  balanced_accuracy  bal_acc_best_threshold  threshold_gap  mean_p_stress  prevalence    status
+    S14  0.584              0.551                   0.636          0.085          0.240       0.300   ranking
+     S2  0.869              0.553                   0.835          0.283          0.125       0.288 threshold
+     S3  0.945              0.689                   0.872          0.183          0.221       0.298 threshold
+     S8  0.912              0.654                   0.929          0.274          0.650       0.309 threshold
+
+How to read this:
+  - Flagged subject with HIGH AUROC and a large gap, or mean_p_stress far from prevalence: the model ranks that person's windows well but the scores sit on the wrong side of the cutoff. That is a threshold/shift failure, not a failure to separate stress from non-stress.
+  - Flagged subject with LOW AUROC, still low after normalization: the model cannot separate that person's stress windows from non-stress ones at all (ranking failure).
+  - Tree models (rf, gb) can saturate: if a subject's features fall outside the range seen in training, every window lands in the same leaves and the scores tie, so AUROC drops toward 0.5 and the subject is labelled 'ranking' even though the cause is a between-subject offset. The tell is that normalization restores AUROC. Linear models (lr) shift smoothly, so there the gap shows up as a threshold failure instead.
+  - 'none' vs 'full' vs 'earlyN': if scores improve with 'full' but not with 'earlyN', the gain depends on knowing the whole recording and would not be available in deployment. 'earlyN' is only meaningful because every WESAD recording starts at rest.
+  - bal_acc_best_threshold uses the subject's own labels; it shows what a perfect per-person cutoff could achieve, not what a deployed model gets.
+  - ~35 independent windows per subject: single-subject differences under ~0.1 are noise.

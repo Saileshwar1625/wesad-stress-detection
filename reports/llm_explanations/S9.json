@@ -1,0 +1,333 @@
+{
+  "subject": "S9",
+  "created_utc": "2026-10-13T23:46:38+00:00",
+  "text": "For S9, random_forest had an auroc of 0.988 and a balanced_accuracy of 0.8, and gradient_boosting had an auroc of 0.9708 and a balanced_accuracy of 0.875. Both rank this participant's windows well and are labeled \"ok\". Their mean predicted stress probabilities (0.1832 and 0.2165) sit somewhat below the true stress share of 0.2941, which may reflect mildly low scores. logistic_regression had an auroc of 0.726 and a balanced_accuracy of 0.5208, labeled \"mixed\". Its ranking is weaker and its default-threshold accuracy is near chance, so this is not a pure threshold shift. Its best-threshold balanced_accuracy was 0.7667.\n\nCompared with the other participants, S9's heart rate response is reversed: hr_mean_bpm changed by -2.978 versus a population change of 8.2792 (response_ratio -0.36). acc_mag_mean is also reversed (response_ratio -0.98). Three features show weak responses: eda_std (0.21), eda_slope (0.17) and acc_mag_std (0.21). hrv_proxy_std_ms has a response_ratio of 1.48, but that feature is unreliable because it comes from a crude peak detector. The accelerometer differences may reflect motion artifact as a data-quality issue. These are observations only, and this analysis did not test whether they cause the models' behavior. With 15 participants and about 35 independent windows for this person, these statistics cannot tell us why the models behaved as they did.",
+  "model_requested": "claude-sonnet-5-5",
+  "model_served": "claude-sonnet-5-5",
+  "stop_reason": "end_turn",
+  "input_tokens": 4262,
+  "output_tokens": 518,
+  "temperature": null,
+  "max_tokens": 900,
+  "grounding": {
+    "n_numbers": 19,
+    "exact": [
+      "0.988",
+      "0.8",
+      "0.9708",
+      "0.875",
+      "0.1832",
+      "0.2165",
+      "0.2941",
+      "0.726",
+      "0.5208",
+      "0.7667",
+      "-2.978",
+      "8.2792",
+      "-0.36",
+      "-0.98",
+      "0.21",
+      "0.17",
+      "1.48",
+      "15",
+      "35"
+    ],
+    "rounded": [],
+    "ungrounded": [],
+    "passed": true
+  },
+  "causal_or_clinical_flags": [
+    "because",
+    "cause"
+  ],
+  "system_prompt_sha256_16": "95e6dd35f55d89f7",
+  "facts_sha256_16": "8dc61b73fb8ab3e1",
+  "system_prompt": "You are writing a short, cautious description of how wearable stress-detection models behaved on ONE held-out study participant. You receive only a JSON object of statistics computed by the study code. You never see raw signals and you never classify anything.\n\nMeaning of the fields:\n- auroc: how well the model's stress probabilities rank this participant's stress windows above their non-stress windows (0.5 is chance, 1.0 is perfect). It does not depend on where the decision threshold is.\n- balanced_accuracy: accuracy averaged over the two classes at the model's default threshold (0.5 is chance).\n- best_threshold_balanced_accuracy: the balanced accuracy if the threshold were chosen using this participant's own labels (an upper bound, not achievable in practice).\n- mean_predicted_p_stress vs true_stress_share: if the mean predicted probability is far below the true stress share, the model's scores for this participant are shifted low (and the reverse if far above).\n- status_label: \"ok\", \"threshold\" (ranks well but the cutoff is wrong), \"ranking\" (does not rank the classes) or \"mixed\", using the cutoffs in study_context.\n- feature_comparison.stress_response_direction: for each feature, how this participant's stress-minus-non-stress change compares with the other participants (response_ratio 1.0 is typical, near 0 is flat, negative is reversed; weak_response true means the same direction but under a quarter of the typical size).\n\nWrite two short paragraphs of plain prose (no lists, no headings, at most 220 words in total):\nParagraph 1 - what the models did. For each of the three models give this participant's auroc and balanced_accuracy, and say whether the numbers point to poor ranking, to a shifted threshold (high auroc, low balanced_accuracy, and a mean predicted probability far from the true share), or to no problem. Use only the numbers.\nParagraph 2 - how this participant's data differ from the others. Report the features whose response is reversed (direction_matches_population false), weak (weak_response true) or far larger than typical (response_ratio well above 1), with their numbers. State that these are observations and that this analysis did not test whether they cause the models' behavior. End with one sentence on what these statistics cannot tell.\n\nRules:\n- Use only numbers that appear in the JSON, written as given (you may round to fewer decimals). Do not compute new numbers: no differences, sums, ratios or percentages.\n- Do not state a cause. Use wording such as \"is consistent with\" or \"may\".\n- hrv_proxy_std_ms comes from a crude peak detector and its values are far larger than real heart-rate variability; mention it only to say it is unreliable.\n- If accelerometer features are unusual, mention motion artifact as a data-quality possibility, not a physiological one.\n- Do not mention diagnoses, medications, health conditions or anything not in the JSON.\n- Refer to models by the names used in the JSON.\n- Fewer than 15 participants and about 35 independent windows each: do not overstate.",
+  "facts": {
+    "subject": "S9",
+    "study_context": {
+      "n_subjects": 15,
+      "window_seconds": 60,
+      "approx_independent_windows_per_subject": 35,
+      "n_windows_this_subject": 68,
+      "struggling_balanced_accuracy_cutoff": 0.7,
+      "ranking_status_auroc_below": 0.7,
+      "threshold_status_auroc_at_least": 0.85,
+      "threshold_status_gap_at_least": 0.15
+    },
+    "model_diagnostics": {
+      "random_forest": {
+        "raw_features_default_threshold": {
+          "auroc": 0.988,
+          "balanced_accuracy": 0.8,
+          "best_threshold_balanced_accuracy": 0.975,
+          "mean_predicted_p_stress": 0.1832,
+          "true_stress_share": 0.2941,
+          "status_label": "ok"
+        },
+        "all_subjects_reference": {
+          "mean_auroc": 0.972,
+          "mean_balanced_accuracy": 0.846
+        },
+        "by_normalization": {
+          "none": {
+            "auroc": 0.988,
+            "balanced_accuracy": 0.8
+          },
+          "full": {
+            "auroc": 1.0,
+            "balanced_accuracy": 1.0
+          },
+          "early50": {
+            "auroc": 0.9667,
+            "balanced_accuracy": 0.825
+          },
+          "early20": {
+            "auroc": 1.0,
+            "balanced_accuracy": 1.0
+          },
+          "early10": {
+            "auroc": 1.0,
+            "balanced_accuracy": 1.0
+          }
+        }
+      },
+      "gradient_boosting": {
+        "raw_features_default_threshold": {
+          "auroc": 0.9708,
+          "balanced_accuracy": 0.875,
+          "best_threshold_balanced_accuracy": 0.925,
+          "mean_predicted_p_stress": 0.2165,
+          "true_stress_share": 0.2941,
+          "status_label": "ok"
+        },
+        "all_subjects_reference": {
+          "mean_auroc": 0.949,
+          "mean_balanced_accuracy": 0.833
+        },
+        "by_normalization": {
+          "none": {
+            "auroc": 0.9708,
+            "balanced_accuracy": 0.875
+          },
+          "full": {
+            "auroc": 1.0,
+            "balanced_accuracy": 0.9479
+          },
+          "early50": {
+            "auroc": 0.8708,
+            "balanced_accuracy": 0.6417
+          },
+          "early20": {
+            "auroc": 0.999,
+            "balanced_accuracy": 0.9896
+          },
+          "early10": {
+            "auroc": 0.9958,
+            "balanced_accuracy": 0.9167
+          }
+        }
+      },
+      "logistic_regression": {
+        "raw_features_default_threshold": {
+          "auroc": 0.726,
+          "balanced_accuracy": 0.5208,
+          "best_threshold_balanced_accuracy": 0.7667,
+          "mean_predicted_p_stress": 0.2302,
+          "true_stress_share": 0.2941,
+          "status_label": "mixed"
+        },
+        "all_subjects_reference": {
+          "mean_auroc": 0.935,
+          "mean_balanced_accuracy": 0.806
+        },
+        "by_normalization": {
+          "none": {
+            "auroc": 0.726,
+            "balanced_accuracy": 0.5208
+          },
+          "full": {
+            "auroc": 0.8375,
+            "balanced_accuracy": 0.7958
+          },
+          "early50": {
+            "auroc": 0.95,
+            "balanced_accuracy": 0.75
+          },
+          "early20": {
+            "auroc": 0.9281,
+            "balanced_accuracy": 0.75
+          },
+          "early10": {
+            "auroc": 0.9396,
+            "balanced_accuracy": 0.8729
+          }
+        }
+      }
+    },
+    "feature_comparison": {
+      "subject": "S9",
+      "per_class": {
+        "non_stress": {
+          "hr_mean_bpm": {
+            "subject_mean": 75.113,
+            "others_mean": 67.9481,
+            "z_score": 1.19
+          },
+          "hrv_proxy_std_ms": {
+            "subject_mean": 355.3489,
+            "others_mean": 602.409,
+            "z_score": -1.52
+          },
+          "eda_mean": {
+            "subject_mean": 0.2898,
+            "others_mean": 1.3988,
+            "z_score": -0.66
+          },
+          "eda_std": {
+            "subject_mean": 0.0059,
+            "others_mean": 0.0398,
+            "z_score": -0.67
+          },
+          "eda_slope": {
+            "subject_mean": -0.0,
+            "others_mean": -0.0003,
+            "z_score": 0.75
+          },
+          "temp_mean": {
+            "subject_mean": 33.4083,
+            "others_mean": 33.1673,
+            "z_score": 0.15
+          },
+          "temp_slope": {
+            "subject_mean": 0.0002,
+            "others_mean": 0.0001,
+            "z_score": 0.48
+          },
+          "acc_mag_mean": {
+            "subject_mean": 63.2671,
+            "others_mean": 63.5713,
+            "z_score": -0.43
+          },
+          "acc_mag_std": {
+            "subject_mean": 1.5073,
+            "others_mean": 1.7231,
+            "z_score": -0.4
+          }
+        },
+        "stress": {
+          "hr_mean_bpm": {
+            "subject_mean": 72.135,
+            "others_mean": 76.2273,
+            "z_score": -0.42
+          },
+          "hrv_proxy_std_ms": {
+            "subject_mean": 599.3505,
+            "others_mean": 767.6617,
+            "z_score": -0.87
+          },
+          "eda_mean": {
+            "subject_mean": 1.0864,
+            "others_mean": 3.6385,
+            "z_score": -0.66
+          },
+          "eda_std": {
+            "subject_mean": 0.024,
+            "others_mean": 0.1272,
+            "z_score": -1.0
+          },
+          "eda_slope": {
+            "subject_mean": 0.0001,
+            "others_mean": 0.0003,
+            "z_score": -0.44
+          },
+          "temp_mean": {
+            "subject_mean": 33.0974,
+            "others_mean": 32.6127,
+            "z_score": 0.47
+          },
+          "temp_slope": {
+            "subject_mean": -0.0003,
+            "others_mean": -0.0003,
+            "z_score": -0.22
+          },
+          "acc_mag_mean": {
+            "subject_mean": 63.0019,
+            "others_mean": 63.8422,
+            "z_score": -0.77
+          },
+          "acc_mag_std": {
+            "subject_mean": 2.0871,
+            "others_mean": 4.466,
+            "z_score": -1.04
+          }
+        }
+      },
+      "stress_response_direction": {
+        "hr_mean_bpm": {
+          "subject_stress_minus_nonstress": -2.978,
+          "population_stress_minus_nonstress": 8.2792,
+          "direction_matches_population": false,
+          "response_ratio": -0.36,
+          "weak_response": false
+        },
+        "hrv_proxy_std_ms": {
+          "subject_stress_minus_nonstress": 244.0016,
+          "population_stress_minus_nonstress": 165.2527,
+          "direction_matches_population": true,
+          "response_ratio": 1.48,
+          "weak_response": false
+        },
+        "eda_mean": {
+          "subject_stress_minus_nonstress": 0.7966,
+          "population_stress_minus_nonstress": 2.2397,
+          "direction_matches_population": true,
+          "response_ratio": 0.36,
+          "weak_response": false
+        },
+        "eda_std": {
+          "subject_stress_minus_nonstress": 0.0181,
+          "population_stress_minus_nonstress": 0.0874,
+          "direction_matches_population": true,
+          "response_ratio": 0.21,
+          "weak_response": true
+        },
+        "eda_slope": {
+          "subject_stress_minus_nonstress": 0.0001,
+          "population_stress_minus_nonstress": 0.0006,
+          "direction_matches_population": true,
+          "response_ratio": 0.17,
+          "weak_response": true
+        },
+        "temp_mean": {
+          "subject_stress_minus_nonstress": -0.3109,
+          "population_stress_minus_nonstress": -0.5546,
+          "direction_matches_population": true,
+          "response_ratio": 0.56,
+          "weak_response": false
+        },
+        "temp_slope": {
+          "subject_stress_minus_nonstress": -0.0005,
+          "population_stress_minus_nonstress": -0.0004,
+          "direction_matches_population": true,
+          "response_ratio": 1.25,
+          "weak_response": false
+        },
+        "acc_mag_mean": {
+          "subject_stress_minus_nonstress": -0.2652,
+          "population_stress_minus_nonstress": 0.2709,
+          "direction_matches_population": false,
+          "response_ratio": -0.98,
+          "weak_response": false
+        },
+        "acc_mag_std": {
+          "subject_stress_minus_nonstress": 0.5798,
+          "population_stress_minus_nonstress": 2.7429,
+          "direction_matches_population": true,
+          "response_ratio": 0.21,
+          "weak_response": true
+        }
+      }
+    }
+  }
+}
