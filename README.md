@@ -5,7 +5,7 @@ Leave-one-subject-out (LOSO) evaluation of wrist-only stress detection on the
 dataset. Results are reported per person and for three model families, with
 feature-group diagnostics for the people the models fail on.
 
-The full write-up is in [REPORT.md](REPORT.md).
+The full write-up is in [REPORT.md](REPORT.md), also available as a paper-style PDF: [docs/technical-report.pdf](docs/technical-report.pdf) (LaTeX source: [docs/technical-report.tex](docs/technical-report.tex)).
 
 ## What I found
 
